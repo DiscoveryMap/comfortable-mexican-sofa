@@ -14,18 +14,24 @@ class Comfy::Admin::Cms::PagesController < Comfy::Admin::Cms::BaseController
   before_action :preview_page, only: %i[create update]
 
   def index
+
     return redirect_to action: :new if site_has_no_pages?
 
     return index_for_redactor if params[:source] == "redactor"
 
     @pages_by_parent = pages_grouped_by_parent
 
-    @pages =
+    if params[:search]
+      @pages = Comfy::Cms::Page.search(params[:search])
+    else
+      @pages = Comfy::Cms::Page.all
+
       if params[:categories].present?
         @site.pages.includes(:categories).for_category(params[:categories]).order(:label)
       else
         [@site.pages.root].compact
       end
+    end
   end
 
   def new

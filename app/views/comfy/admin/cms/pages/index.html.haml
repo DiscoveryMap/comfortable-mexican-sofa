@@ -1,3 +1,8 @@
+= form_tag(comfy_admin_cms_site_pages_path, method: "get") do
+  %p
+    = text_field_tag :search, params[:search]
+    = submit_tag "Search", id: "removed_disabled",  formtarget: '_blank', class: "btn btn-secondary"
+
 - content_for :right_column do
   = render "comfy/admin/cms/categories/index", type: "Comfy::Cms::Page"
 
@@ -11,3 +16,12 @@
   = render partial: "index_branch", collection: @pages
 
 = comfy_admin_partial "comfy/admin/cms/partials/pages_after"
+
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", :type => "text/javascript"}
+
+:javascript
+  $('#removed_disabled').on('click', function(){
+    setInterval(function() {
+      $('#removed_disabled').attr('disabled', false);
+    }, 1000);
+  });
