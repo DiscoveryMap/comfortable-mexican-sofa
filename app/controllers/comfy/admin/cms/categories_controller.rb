@@ -11,7 +11,18 @@ class Comfy::Admin::Cms::CategoriesController < Comfy::Admin::Cms::BaseControlle
 
   def create
     @category = @site.categories.create!(category_params)
-  rescue ActiveRecord::RecordInvalid
+      respond_to do |format|
+        if @category.save
+          format.html do
+            redirect_to comfy_admin_cms_site_pages_path(@category)
+          end
+          format.json { render json: @category.to_json }
+        else
+          format.html { render 'show'}
+          format.json { render json: @category.errors }
+        end
+      end
+    rescue ActiveRecord::RecordInvalid
     head :ok
   end
 
