@@ -81,18 +81,17 @@ class SeedsSnippetsTest < ActiveSupport::TestCase
     ComfortableMexicanSofa::Seeds::Snippet::Exporter.new("default-site", "test-site").export!
 
     assert File.exist?(content_path)
-    out = <<~TEXT
+    out = <<~TEXT.chomp
       [attributes]
       ---
       label: Default Snippet
       categories:
       - Default
       position: 0
-
       [content]
       snippet content
     TEXT
-    assert_equal out, IO.read(content_path)
+    assert_seed_equal out, IO.read(content_path)
 
   ensure
     FileUtils.rm_rf(host_path)

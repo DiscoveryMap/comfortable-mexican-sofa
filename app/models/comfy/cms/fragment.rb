@@ -4,8 +4,6 @@ class Comfy::Cms::Fragment < ActiveRecord::Base
 
   self.table_name = "comfy_cms_fragments"
 
-  has_many_attached :attachments
-
   serialize :content
 
   attr_reader :files
@@ -20,6 +18,7 @@ class Comfy::Cms::Fragment < ActiveRecord::Base
 
   # -- Relationships -----------------------------------------------------------
   belongs_to :record, polymorphic: true, touch: true
+  has_many_attached :attachments
 
   # -- Validations -------------------------------------------------------------
   validates :identifier,
@@ -54,7 +53,7 @@ protected
     # If we're dealing with a single file
     if tag == "file"
       @files = [@files.first]
-      attachments&.purge_later
+      attachments&.clear
     end
 
     attachments.attach(@files)

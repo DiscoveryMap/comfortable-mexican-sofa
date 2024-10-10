@@ -102,13 +102,12 @@ class SeedsLayoutsTest < ActiveSupport::TestCase
     assert File.exist?(layout_2_content_path)
     assert File.exist?(layout_3_content_path)
 
-    out = <<~TEXT
+    out = <<~TEXT.chomp
       [attributes]
       ---
       label: Default Layout
       app_layout:\s
       position: 0
-
       [content]
       {{cms:textarea content}}
       [js]
@@ -116,15 +115,15 @@ class SeedsLayoutsTest < ActiveSupport::TestCase
       [css]
       default_css
     TEXT
-    assert_equal out, IO.read(layout_1_content_path)
 
-    out = <<~TEXT
+    assert_seed_equal out, IO.read(layout_1_content_path)
+
+    out = <<~TEXT.chomp
       [attributes]
       ---
       label: Nested Layout
       app_layout:\s
       position: 0
-
       [content]
       {{cms:text header}}
       {{cms:textarea content}}
@@ -133,15 +132,14 @@ class SeedsLayoutsTest < ActiveSupport::TestCase
       [css]
       nested_css
     TEXT
-    assert_equal out, IO.read(layout_2_content_path)
+    assert_seed_equal out, IO.read(layout_2_content_path)
 
-    out = <<~TEXT
+    out = <<~TEXT.chomp
       [attributes]
       ---
       label: Child Layout
       app_layout:\s
       position: 0
-
       [content]
       {{cms:textarea left_column}}
       {{cms:textarea right_column}}
@@ -150,7 +148,7 @@ class SeedsLayoutsTest < ActiveSupport::TestCase
       [css]
       child_css
     TEXT
-    assert_equal out, IO.read(layout_3_content_path)
+    assert_seed_equal out, IO.read(layout_3_content_path)
 
   ensure
     FileUtils.rm_rf(host_path)
