@@ -8,7 +8,6 @@ require "active_link_to"
 require "kramdown"
 require "jquery-rails"
 require "haml-rails"
-require "sassc-rails"
 
 module ComfortableMexicanSofa
   class Engine < ::Rails::Engine
